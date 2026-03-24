@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,45 +18,51 @@
         <img src="/cirta store img.jpg" alt="Cirta Store logo" />
         <span>Cirta Store</span>
       </strong>
-      <a class="btn btn-primary" href="#products">Order Now</a>
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Language switch">
+          <button class="lang-btn active" id="langFrBtn" type="button">FR</button>
+          <button class="lang-btn" id="langArBtn" type="button">AR</button>
+        </div>
+        <a class="btn btn-primary" href="#products" data-i18n="order_now">Order Now</a>
+      </div>
     </div>
   </header>
 
   <section class="hero" id="top">
     <div class="hero-content">
-      <h1>Your Phone. Upgraded.</h1>
-      <p>Premium phone accessories delivered to your door</p>
+      <h1 data-i18n="hero_title">Your Phone. Upgraded.</h1>
+      <p data-i18n="hero_subtitle">Premium phone accessories delivered to your door</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#products">Shop Now</a>
+        <a class="btn btn-primary" href="#products" data-i18n="shop_now">Shop Now</a>
       </div>
     </div>
   </section>
 
   <section class="section" id="products">
     <div class="container">
-      <h2>Our Products</h2>
+      <h2 data-i18n="our_products">Our Products</h2>
       <div id="productsGrid" class="grid"></div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h2>Why Cirta Store</h2>
+      <h2 data-i18n="why_cirta">Why Cirta Store</h2>
       <div class="features">
         <article class="feature">
           <div>🚚</div>
-          <h3>Livraison Rapide</h3>
-          <p class="muted">Expedition rapide partout en Algerie.</p>
+          <h3 data-i18n="feature_fast_title">Livraison Rapide</h3>
+          <p class="muted" data-i18n="feature_fast_desc">Expedition rapide partout en Algerie.</p>
         </article>
         <article class="feature">
           <div>✅</div>
-          <h3>Qualite Garantie</h3>
-          <p class="muted">Produits fiables et selectionnes avec soin.</p>
+          <h3 data-i18n="feature_quality_title">Qualite Garantie</h3>
+          <p class="muted" data-i18n="feature_quality_desc">Produits fiables et selectionnes avec soin.</p>
         </article>
         <article class="feature">
           <div>💬</div>
-          <h3>Commande Facile</h3>
-          <p class="muted">Choisis un produit et commande en quelques clics.</p>
+          <h3 data-i18n="feature_order_title">Commande Facile</h3>
+          <p class="muted" data-i18n="feature_order_desc">Choisis un produit et commande en quelques clics.</p>
         </article>
       </div>
     </div>
@@ -64,7 +70,7 @@
 
   <section class="section">
     <div class="container">
-      <h2>Ce que disent nos clients</h2>
+      <h2 data-i18n="reviews_title">Ce que disent nos clients</h2>
       <div class="reviews">
         <article class="review">
           <div>★★★★★</div>
@@ -87,8 +93,8 @@
 
   <section class="final">
     <div class="container">
-      <h2>Pret a upgrader ton telephone ?</h2>
-      <a class="btn btn-primary" href="#products">Commander maintenant</a>
+      <h2 data-i18n="final_title">Pret a upgrader ton telephone ?</h2>
+      <a class="btn btn-primary" href="#products" data-i18n="final_btn">Commander maintenant</a>
     </div>
   </section>
 
@@ -109,7 +115,7 @@
           <svg viewBox="0 0 32 32" aria-hidden="true">
             <path fill="currentColor" d="M19.11 17.02c-.27-.14-1.6-.79-1.84-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.31.2-.58.07-.27-.14-1.14-.42-2.17-1.33-.8-.71-1.34-1.58-1.49-1.85-.16-.27-.02-.41.12-.54.12-.12.27-.31.41-.47.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.47-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.47.07-.72.34s-.95.93-.95 2.26.97 2.61 1.1 2.79c.14.18 1.91 2.92 4.63 4.1.65.28 1.16.45 1.56.57.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.82-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.31zM16.03 3.2C9.1 3.2 3.48 8.82 3.48 15.75c0 2.22.58 4.3 1.6 6.11L3 29l7.35-1.93a12.5 12.5 0 0 0 5.68 1.36h.01c6.93 0 12.55-5.63 12.55-12.56S22.96 3.2 16.03 3.2z"/>
           </svg>
-          <span>WhatsApp</span>
+          <span data-i18n="whatsapp_label">WhatsApp</span>
         </a>
       </div>
     </div>
@@ -123,24 +129,24 @@
 
   <div class="modal" id="orderModal">
     <div class="modal-box">
-      <h3 id="modalTitle">Commander</h3>
+      <h3 id="modalTitle" data-i18n="modal_title">Commander</h3>
       <p class="muted" id="modalProduct"></p>
       <form id="orderForm">
-        <label for="name">Nom complet</label>
+        <label for="name" data-i18n="label_name">Nom complet</label>
         <input id="name" name="name" required />
 
-        <label for="phone">Telephone</label>
+        <label for="phone" data-i18n="label_phone">Telephone</label>
         <input id="phone" name="phone" required />
 
-        <label for="location">Adresse / Wilaya</label>
+        <label for="location" data-i18n="label_location">Adresse / Wilaya</label>
         <input id="location" name="location" required />
 
-        <label for="note">Note (optionnel)</label>
+        <label for="note" data-i18n="label_note">Note (optionnel)</label>
         <textarea id="note" name="note"></textarea>
 
         <div class="row" style="margin-top: .8rem;">
-          <button type="button" class="btn btn-ghost" id="closeModal">Annuler</button>
-          <button type="submit" class="btn btn-primary">Envoyer la commande</button>
+          <button type="button" class="btn btn-ghost" id="closeModal" data-i18n="btn_cancel">Annuler</button>
+          <button type="submit" class="btn btn-primary" data-i18n="btn_send_order">Envoyer la commande</button>
         </div>
       </form>
       <p id="orderStatus" class="status"></p>

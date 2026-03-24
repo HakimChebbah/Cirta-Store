@@ -4,8 +4,106 @@ const closeModalBtn = document.getElementById("closeModal");
 const orderForm = document.getElementById("orderForm");
 const orderStatus = document.getElementById("orderStatus");
 const modalProduct = document.getElementById("modalProduct");
+const langFrBtn = document.getElementById("langFrBtn");
+const langArBtn = document.getElementById("langArBtn");
+const pageTitle = document.querySelector("title");
 
 let selectedProduct = null;
+let currentLang = localStorage.getItem("cirta_lang") || "fr";
+
+const i18n = {
+  fr: {
+    page_title: "Cirta Store | Accessoires Phone en Algerie",
+    order_now: "Order Now",
+    hero_title: "Your Phone. Upgraded.",
+    hero_subtitle: "Premium phone accessories delivered to your door",
+    shop_now: "Shop Now",
+    our_products: "Our Products",
+    why_cirta: "Why Cirta Store",
+    feature_fast_title: "Livraison Rapide",
+    feature_fast_desc: "Expedition rapide partout en Algerie.",
+    feature_quality_title: "Qualite Garantie",
+    feature_quality_desc: "Produits fiables et selectionnes avec soin.",
+    feature_order_title: "Commande Facile",
+    feature_order_desc: "Choisis un produit et commande en quelques clics.",
+    reviews_title: "Ce que disent nos clients",
+    final_title: "Pret a upgrader ton telephone ?",
+    final_btn: "Commander maintenant",
+    whatsapp_label: "WhatsApp",
+    modal_title: "Commander",
+    label_name: "Nom complet",
+    label_phone: "Telephone",
+    label_location: "Adresse / Wilaya",
+    label_note: "Note (optionnel)",
+    btn_cancel: "Annuler",
+    btn_send_order: "Envoyer la commande",
+    loading: "Chargement...",
+    empty_products: "Aucun produit disponible pour le moment.",
+    order_btn: "Commander",
+    sending: "Envoi en cours...",
+    redirecting: "Redirection vers WhatsApp...",
+    redirect_hint: "Si rien ne se passe, clique ici pour ouvrir WhatsApp.",
+    send_error: "Erreur: impossible d'envoyer la commande."
+  },
+  ar: {
+    page_title: "سيرتا ستور | اكسسوارات الهاتف في الجزائر",
+    order_now: "اطلب الآن",
+    hero_title: "هاتفك... نسخة أفضل",
+    hero_subtitle: "اكسسوارات هاتف ممتازة حتى باب دارك",
+    shop_now: "تسوق الآن",
+    our_products: "منتجاتنا",
+    why_cirta: "لماذا سيرتا ستور",
+    feature_fast_title: "توصيل سريع",
+    feature_fast_desc: "توصيل سريع لكل ولايات الجزائر.",
+    feature_quality_title: "جودة مضمونة",
+    feature_quality_desc: "منتجات موثوقة ومختارة بعناية.",
+    feature_order_title: "طلب سهل",
+    feature_order_desc: "اختار المنتج واطلب في ثواني.",
+    reviews_title: "آراء زبائننا",
+    final_title: "جاهز تطوّر هاتفك؟",
+    final_btn: "اطلب الآن",
+    whatsapp_label: "واتساب",
+    modal_title: "اطلب المنتج",
+    label_name: "الاسم الكامل",
+    label_phone: "رقم الهاتف",
+    label_location: "العنوان / الولاية",
+    label_note: "ملاحظة (اختياري)",
+    btn_cancel: "الغاء",
+    btn_send_order: "ارسال الطلب",
+    loading: "جار التحميل...",
+    empty_products: "لا توجد منتجات حاليا.",
+    order_btn: "اطلب",
+    sending: "جاري الارسال...",
+    redirecting: "جاري التحويل إلى واتساب...",
+    redirect_hint: "اذا لم يفتح، اضغط هنا لفتح واتساب.",
+    send_error: "تعذر ارسال الطلب."
+  }
+};
+
+function t(key) {
+  return i18n[currentLang][key] || i18n.fr[key] || key;
+}
+
+function applyLanguage() {
+  document.documentElement.lang = currentLang === "ar" ? "ar" : "fr";
+  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+  pageTitle.textContent = t("page_title");
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    el.textContent = t(key);
+  });
+
+  langFrBtn.classList.toggle("active", currentLang === "fr");
+  langArBtn.classList.toggle("active", currentLang === "ar");
+}
+
+function setLanguage(lang) {
+  currentLang = lang === "ar" ? "ar" : "fr";
+  localStorage.setItem("cirta_lang", currentLang);
+  applyLanguage();
+  loadProducts();
+}
 
 function formatPrice(price) {
   return `${Number(price).toLocaleString("fr-FR")} DA`;
@@ -37,12 +135,12 @@ function closeModal() {
 }
 
 async function loadProducts() {
-  productsGrid.innerHTML = "<p>Chargement...</p>";
+  productsGrid.innerHTML = `<p>${t("loading")}</p>`;
   const resp = await fetch("/api/products");
   const products = await resp.json();
 
   if (!Array.isArray(products) || products.length === 0) {
-    productsGrid.innerHTML = "<p>Aucun produit disponible pour le moment.</p>";
+    productsGrid.innerHTML = `<p>${t("empty_products")}</p>`;
     return;
   }
 
@@ -62,7 +160,7 @@ async function loadProducts() {
             <h3>${product.name}</h3>
             <p class="muted">${product.description}</p>
             <p class="price">${formatPrice(product.price_da)}</p>
-            <button class="btn btn-primary order-btn" data-id="${product.id}">Commander</button>
+            <button class="btn btn-primary order-btn" data-id="${product.id}">${t("order_btn")}</button>
           </div>
         </article>
       `;
@@ -89,7 +187,7 @@ orderForm.addEventListener("submit", async (e) => {
     note: orderForm.note.value.trim()
   };
 
-  orderStatus.textContent = "Envoi en cours...";
+  orderStatus.textContent = t("sending");
   orderStatus.className = "status";
 
   try {
@@ -106,8 +204,8 @@ orderForm.addEventListener("submit", async (e) => {
 
     orderStatus.className = "status ok";
     orderStatus.innerHTML = `
-      Redirection vers WhatsApp...<br />
-      Si rien ne se passe, <a href="${data.whatsapp_url}" target="_self" style="color:#16a34a;font-weight:700;">clique ici pour ouvrir WhatsApp</a>.
+      ${t("redirecting")}<br />
+      <a href="${data.whatsapp_url}" target="_self" style="color:#16a34a;font-weight:700;">${t("redirect_hint")}</a>
     `;
 
     if (isMobile) {
@@ -120,7 +218,7 @@ orderForm.addEventListener("submit", async (e) => {
       window.location.href = data.whatsapp_url;
     }
   } catch (err) {
-    orderStatus.textContent = "Erreur: impossible d'envoyer la commande.";
+    orderStatus.textContent = t("send_error");
     orderStatus.className = "status err";
   }
 });
@@ -130,4 +228,8 @@ orderModal.addEventListener("click", (e) => {
   if (e.target === orderModal) closeModal();
 });
 
+applyLanguage();
 loadProducts();
+
+langFrBtn.addEventListener("click", () => setLanguage("fr"));
+langArBtn.addEventListener("click", () => setLanguage("ar"));
