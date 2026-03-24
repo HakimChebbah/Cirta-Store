@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Cirta Store</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <strong>Cirta Store Admin</strong>
+      <a class="btn btn-ghost" href="/">Voir le store</a>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <div class="container admin-grid">
+      <section class="panel">
+        <h2>Connexion Admin</h2>
+        <form id="loginForm">
+          <label for="password">Mot de passe admin</label>
+          <input id="password" type="password" required />
+          <div class="row" style="margin-top: .7rem;">
+            <button class="btn btn-primary" type="submit">Se connecter</button>
+            <button class="btn btn-ghost" type="button" id="logoutBtn">Se deconnecter</button>
+          </div>
+        </form>
+        <p class="status" id="loginStatus"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Ajouter / Modifier Produit</h2>
+        <form id="productForm">
+          <input id="productId" type="hidden" />
+          <label for="name">Nom produit</label>
+          <input id="name" required />
+
+          <label for="description">Description</label>
+          <textarea id="description" required></textarea>
+
+          <label for="price">Prix (DA)</label>
+          <input id="price" type="number" min="1" required />
+
+          <label for="imageUrl">Image URL / nom fichier (optionnel)</label>
+          <input id="imageUrl" placeholder="ex: iphone case.jpg" />
+
+          <div class="row" style="margin-top: .8rem;">
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+            <button class="btn btn-ghost" type="button" id="resetBtn">Nouveau</button>
+          </div>
+        </form>
+        <p class="status" id="formStatus"></p>
+      </section>
+    </div>
+
+    <div class="container" style="margin-top:1rem;">
+      <section class="panel">
+        <h2>Produits</h2>
+        <div id="productsTable"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
