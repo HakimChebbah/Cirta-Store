@@ -96,8 +96,8 @@ orderForm.addEventListener("submit", async (e) => {
 
     orderStatus.textContent = "Redirection vers WhatsApp...";
     orderStatus.className = "status ok";
-    window.open(data.whatsapp_url, "_blank");
-    setTimeout(closeModal, 500);
+    // Use direct navigation to avoid popup blockers after async calls.
+    window.location.href = data.whatsapp_url;
   } catch (err) {
     orderStatus.textContent = "Erreur: impossible d'envoyer la commande.";
     orderStatus.className = "status err";
