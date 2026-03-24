@@ -11,6 +11,13 @@ function formatPrice(price) {
   return `${Number(price).toLocaleString("fr-FR")} DA`;
 }
 
+function buildDeepLink(waUrl) {
+  const prefix = "https://wa.me/213657010417?text=";
+  if (!waUrl.startsWith(prefix)) return waUrl;
+  const encodedText = waUrl.slice(prefix.length);
+  return `whatsapp://send?phone=213657010417&text=${encodedText}`;
+}
+
 function fallbackImageMarkup(name) {
   return `<div>${name}</div>`;
 }
@@ -94,10 +101,24 @@ orderForm.addEventListener("submit", async (e) => {
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || "Erreur");
 
-    orderStatus.textContent = "Redirection vers WhatsApp...";
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const deepLink = buildDeepLink(data.whatsapp_url);
+
     orderStatus.className = "status ok";
-    // Use direct navigation to avoid popup blockers after async calls.
-    window.location.href = data.whatsapp_url;
+    orderStatus.innerHTML = `
+      Redirection vers WhatsApp...<br />
+      Si rien ne se passe, <a href="${data.whatsapp_url}" target="_self" style="color:#16a34a;font-weight:700;">clique ici pour ouvrir WhatsApp</a>.
+    `;
+
+    if (isMobile) {
+      // Try app deep-link first on mobile, then fallback to wa.me.
+      window.location.href = deepLink;
+      setTimeout(() => {
+        window.location.href = data.whatsapp_url;
+      }, 1200);
+    } else {
+      window.location.href = data.whatsapp_url;
+    }
   } catch (err) {
     orderStatus.textContent = "Erreur: impossible d'envoyer la commande.";
     orderStatus.className = "status err";
